@@ -1,0 +1,88 @@
+ <!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QMoveFood</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="motorista.css">
+
+    <!-- Leaflet -->
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+</head>
+
+<body>
+
+    <!-- TOPO -->
+    <div class="topbar">
+
+        <h2>QMoveFood Motorista</h2>
+
+        <button id="btnOffline">
+            🟢 Online
+        </button>
+
+    </div>
+
+    <!-- PAINEL DE CORRIDAS -->
+    <div class="painel">
+
+        <h2>Corridas Disponíveis</h2>
+
+        <div id="listaCorridas"></div>
+
+    </div>
+
+    <!-- MAPA -->
+    <div id="map"></div>
+
+    <!-- MENU INFERIOR -->
+    <div class="bottom-menu">
+
+        <button id="btnFinalizar" style="display:none;">
+            ✅ Finalizar Corrida
+        </button>
+
+        <button id="btnInicio">
+            🏠
+            <span>Voçe</span>
+        </button>
+
+        <button id="btnCorridas">
+            🚖
+            <span>Corridas</span>
+        </button>
+
+        <button id="btnPerfil">
+            👤
+            <span>Perfil</span>
+        </button>
+
+        <button id="btnSair">
+            🚪
+            <span>Sair</span>
+        </button>
+
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Leaflet Routing Machine -->
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+    <!-- Seu JavaScript -->
+    <script type="module" src="motorista.js"></script>
+
+</body>
+
+</html>

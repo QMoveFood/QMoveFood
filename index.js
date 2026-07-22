@@ -1,0 +1,381 @@
+import { auth, db } from "./firebase.js";
+
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// 🔹 ELEMENTOS
+const nome = document.getElementById("nome");
+const email = document.getElementById("email");
+const senha = document.getElementById("senha");
+const tipo = document.getElementById("tipo");
+const msgEl = document.getElementById("msg");
+const btnLogin = document.getElementById("btnLogin");
+const btnCadastro = document.getElementById("btnCadastro");
+const loading = document.getElementById("loading");
+
+// 🔹 FUNÇÃO DE MENSAGEM
+function msg(texto, cor) {
+  msgEl.innerText = texto;
+  msgEl.style.color = cor;
+}
+
+// 🔹 FUNÇÃO LOADING
+function mostrarLoading() {
+  loading.style.display = "flex";
+  btnLogin.disabled = true;
+  btnCadastro.disabled = true;
+}
+
+function esconderLoading() {
+  loading.style.display = "none";
+  btnLogin.disabled = false;
+  btnCadastro.disabled = false;
+}
+
+// 🔐 LOGIN
+async function login() {
+
+  if (!email.value || !senha.value) {
+
+    msg(
+      "Preencha email e senha.",
+      "red"
+    );
+
+    return;
+  }
+
+  try {
+
+    mostrarLoading();
+
+    const cred =
+    await signInWithEmailAndPassword(
+      auth,
+      email.value,
+      senha.value
+    );
+
+    if (!cred.user.emailVerified) {
+
+      await signOut(auth);
+
+      msg(
+        "❌ Confirme seu email antes de entrar.",
+        "red"
+      );
+
+      return;
+    }
+
+    const userRef =
+    doc(
+      db,
+      "usuarios",
+      cred.user.uid
+    );
+
+    const userSnap =
+    await getDoc(userRef);
+
+    if(!userSnap.exists()){
+
+      msg(
+        "Usuário não encontrado.",
+        "red"
+      );
+
+      return;
+    }
+
+    const dados =
+    userSnap.data();
+
+    if(dados.admin){
+
+      location.replace(
+        "admin.html"
+      );
+
+    }
+
+    else if(
+      dados.tipo ===
+      "motorista"
+    ){
+
+      location.replace(
+        "motorista.html"
+      );
+
+    }
+
+    else{
+
+      location.replace(
+        "passageiro.html"
+      );
+
+    }
+
+  }
+
+  catch(e){
+
+    msg(
+      "❌ Email ou senha inválidos.",
+      "red"
+    );
+
+  }
+
+  finally{
+
+    esconderLoading();
+
+  }
+
+}
+
+// 🆕 CADASTRO
+async function cadastrar() {
+
+  if (
+    !nome.value ||
+    !email.value ||
+    !senha.value
+  ) {
+
+    msg(
+      "Preencha todos os campos.",
+      "red"
+    );
+
+    return;
+
+  }
+
+  /* =========================
+     VALIDAR NOME
+  ========================= */
+
+  const nomeLimpo =
+  nome.value.trim();
+
+  const regexNome =
+  /^[A-Za-zÀ-ÿ\s]+$/;
+
+  if(nomeLimpo.length < 3){
+
+    msg(
+      "Digite seu nome verdadeiro.",
+      "red"
+    );
+
+    return;
+
+  }
+
+  if(!regexNome.test(nomeLimpo)){
+
+    msg(
+      "Nome inválido.",
+      "red"
+    );
+
+    return;
+
+  }
+
+  if(!nomeLimpo.includes(" ")){
+
+    msg(
+      "Digite nome e sobrenome.",
+      "red"
+    );
+
+    return;
+
+  }
+
+  try {
+
+    mostrarLoading();
+
+    const cred =
+    await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      senha.value
+    );
+
+    await sendEmailVerification(
+      cred.user
+    );
+
+    /* =========================
+       SALVAR USUARIO
+    ========================= */
+
+    await setDoc(
+  doc(
+    db,
+    "usuarios",
+    cred.user.uid
+  ),
+  {
+    uid: cred.user.uid,
+    nome: nomeLimpo,
+    email: cred.user.email,
+
+    tipo: tipo.value,
+
+    admin: false,
+
+    online: false,
+
+    lat: null,
+    lng: null,
+
+
+    criadoEm: serverTimestamp()
+  }
+);
+
+    await signOut(auth);
+
+    msg(
+      "📧 Cadastro criado! Verifique seu email NA CAIXA DE SPAM.",
+      "lime"
+    );
+
+  }
+
+  catch (e) {
+
+    msg(e.message, "red");
+
+  }
+
+  finally {
+
+    esconderLoading();
+
+  }
+
+}
+
+// 🔹 EVENTOS
+btnLogin.addEventListener("click", login);
+btnCadastro.addEventListener("click", cadastrar);
+
+// 🔹 ATIVAR LOGIN COM ENTER
+[email, senha].forEach(input => {
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      login();
+    }
+  });
+});
+
+// 🚧 BLOQUEAR LOGIN SE JÁ ESTIVER LOGADO
+onAuthStateChanged(auth, async(user)=>{
+
+  if(
+    !user ||
+    !user.emailVerified
+  ) return;
+
+  const userRef =
+  doc(
+    db,
+    "usuarios",
+    user.uid
+  );
+
+  const userSnap =
+  await getDoc(userRef);
+
+  if(!userSnap.exists()) return;
+
+  const dados =
+  userSnap.data();
+
+  if(dados.admin){
+
+    location.replace(
+      "admin.html"
+    );
+
+  }
+
+  else if(
+    dados.tipo ===
+    "motorista"
+  ){
+
+    location.replace(
+      "motorista.html"
+    );
+
+  }
+
+  else{
+
+    location.replace(
+      "passageiro.html"
+    );
+
+  }
+
+});
+
+/* =========================
+   PWA / SERVICE WORKER
+========================= */
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js")
+    .then(() => console.log("Service Worker registrado"))
+    .catch(err => console.log("Erro no SW", err));
+}
+
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const btn = document.createElement("button");
+  btn.innerText = "Instalar App";
+  btn.style.position = "fixed";
+  btn.style.bottom = "20px";
+  btn.style.right = "20px";
+  btn.style.padding = "10px 15px";
+  btn.style.background = "#b30000";
+  btn.style.color = "#fff";
+  btn.style.border = "none";
+  btn.style.borderRadius = "8px";
+  btn.style.cursor = "pointer";
+
+  document.body.appendChild(btn);
+
+  btn.addEventListener("click", async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt = null;
+      btn.remove();
+    }
+  });
+});

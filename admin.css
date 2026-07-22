@@ -1,0 +1,185 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#020617;
+  color:white;
+  padding:20px;
+}
+
+/* TOPO */
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.topbar h1{
+  font-size:32px;
+  font-weight:700;
+}
+
+.topbar button{
+  border:none;
+  background:#ef4444;
+  color:white;
+  padding:12px 20px;
+  border-radius:14px;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:bold;
+}
+
+/* CARDS */
+
+.container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-bottom:30px;
+}
+
+.card{
+  background:#0f172a;
+  border:1px solid #1e293b;
+  border-radius:22px;
+  padding:25px;
+  box-shadow:
+  0 0 30px rgba(0,0,0,.25);
+}
+
+.card h2{
+  font-size:18px;
+  color:#cbd5e1;
+  margin-bottom:15px;
+}
+
+.card p{
+  font-size:45px;
+  color:#22c55e;
+  font-weight:bold;
+}
+
+/* FORM */
+
+.form-box{
+  background:#0f172a;
+  border-radius:22px;
+  padding:25px;
+  margin-bottom:25px;
+  border:1px solid #1e293b;
+}
+
+.form-box h2{
+  margin-bottom:20px;
+  font-size:28px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.form-grid input,
+.form-grid select{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  background:#1e293b;
+  color:white;
+  font-size:15px;
+}
+
+.form-grid input::placeholder{
+  color:#94a3b8;
+}
+
+.salvar{
+  margin-top:18px;
+  width:100%;
+  border:none;
+  padding:16px;
+  border-radius:16px;
+  background:#22c55e;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* LISTA */
+
+#lista{
+  display:grid;
+  gap:15px;
+}
+
+.veiculo{
+  background:#0f172a;
+  border:1px solid #1e293b;
+  border-radius:20px;
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.veiculo-info h3{
+  font-size:22px;
+  margin-bottom:8px;
+}
+
+.veiculo-info p{
+  color:#94a3b8;
+  margin-bottom:5px;
+}
+
+.veiculo button{
+  border:none;
+  background:#ef4444;
+  color:white;
+  padding:12px 16px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:700px){
+
+  body{
+    padding:15px;
+  }
+
+  .topbar h1{
+    font-size:24px;
+  }
+
+  .container{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .veiculo{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
+  }
+
+  .veiculo button{
+    width:100%;
+  }
+
+}

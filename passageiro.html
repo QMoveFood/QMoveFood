@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+  <title>QMoveFood</title>
+
+ <!-- Leaflet CSS -->
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+<!-- Routing Machine CSS -->
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <link rel="stylesheet"
+  href="passageiro.css">
+
+</head>
+<script type="module" src="confirmarPagamento.js"></script>
+<body>
+
+  <!-- TOPO -->
+
+  <div class="topbar">
+
+    <h2>QMoveFood Cliente</h2>
+    
+    <button
+    id="btnAdmin"
+    class="btn-admin">
+      ADMIN
+    </button>
+
+  </div>
+
+  <!-- MAPA -->
+
+  <div id="map"></div>
+
+<div id="aguardandoMotorista" class="aguardando">
+
+    <h2>🚖 Procurando motorista...</h2>
+
+    <p id="tempoBusca">
+        Tempo restante: 03:00
+    </p>
+
+    <button id="btnCancelarCorrida">
+        Cancelar Corrida
+    </button>
+
+</div>
+
+  <!-- CARDS -->
+
+  <div class="cards">
+
+    <div class="card">
+      <h3>Motoristas Disponíveis</h3>
+      <p id="onlineCount">0</p>
+    </div>
+
+  </div>
+
+  <!-- LISTA -->
+
+<div class="veiculos" id="painelCorrida">
+
+    <div class="veiculo">
+
+        <h2>🚖 Solicitar Corrida</h2>
+
+        <div class="infoCorrida">
+
+            <div class="linha">
+                <span id="origemTexto"></span>
+                <strong id="txtOrigem">
+                    Obtendo localização...
+                </strong>
+            </div>
+
+            <div class="linha">
+                <span id="destinoTexto">🎯 Destino</span>
+                <strong id="txtDestino">
+                    Clique no mapa
+                </strong>
+            </div>
+
+            <div class="linha">
+                <span id="distanciaTexto">📏 Distância</span> <strong id="txtDistancia"> 0 km </strong>
+            </div>
+
+            <div class="linha">
+                <span id="tempoTexto">⏱ Tempo Estimado</span>
+                <strong id="txtTempo">
+                    0 min
+                </strong>
+            </div>
+
+            <div class="linha">
+                <span id="valorTexto">💰 Valor</span>
+                <strong id="txtValor">
+                    R$ 0,00
+                </strong>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <h3>Escolha o veículo</h3>
+
+        <div class="tiposVeiculos">
+
+            <div class="tipo ativo" id="tipoMoto">
+
+                🛵<br>
+
+                <strong>Moto</strong>
+
+                <small>Mais rápido</small>
+
+            </div>
+
+            <div class="tipo" id="tipoCarro">
+
+                🚗<br>
+
+                <strong>Carro</strong>
+
+                <small>4 Passageiros</small>
+
+            </div>
+
+            <div class="tipo" id="tipoEntrega">
+
+                📦<br>
+
+                <strong>Entrega</strong>
+
+                <small>Objetos</small>
+
+            </div>
+
+        </div>
+        
+        <p id="btnSelecionarDestino"></p>
+
+        <button id="btnChamarCorrida">
+            🚖 Chamar Motorista
+        </button>
+
+    </div>
+
+</div>
+
+  <!-- MENU -->
+
+  <div class="bottom-menu">
+
+    <button id="btnSair">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span>Sair</span>
+    </button>
+
+    <button id="chatglobal">
+    <i class="fa-solid fa-comments-dollar"></i>
+    <span>Chat Global</span>
+    </button>
+
+
+    <button id="btnCorrida">
+      <i class="fa-solid fa-map"></i>
+      <span>Corrida</span>
+    </button>
+
+    
+
+  </div>
+
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Routing Machine -->
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+<!-- Seus módulos -->
+<script type="module" src="passageiro.js"></script>
+
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script type="module" src="confirmarPagamento.js"></script>
+
+</body>
+</html>
