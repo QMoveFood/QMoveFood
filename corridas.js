@@ -128,6 +128,121 @@ console.log(
 "🚖 Sistema de corridas carregado"
 );
 
+/*========================================
+ FINALIZAR TELA
+========================================*/
+
+function finalizarTela(){
+
+
+    console.log(
+        "🧹 Limpando corrida da tela"
+    );
+
+
+    // parar cronômetro
+    if(timer){
+
+        clearInterval(timer);
+
+        timer=null;
+
+    }
+
+
+
+    corridaAtual = null;
+
+
+    corridaEmAndamento = false;
+
+
+    tempoRestante = 180;
+
+
+
+    // esconder painel aguardando
+
+    if(aguardando){
+
+        aguardando.style.display="none";
+
+    }
+
+
+
+    // liberar botão chamar
+
+    if(btnChamarCorrida){
+
+        btnChamarCorrida.disabled=false;
+
+    }
+
+
+
+    if(btnSelecionarDestino){
+
+        btnSelecionarDestino.disabled=false;
+
+    }
+
+
+
+    // remover motorista do mapa
+
+    if(marcadorMotorista){
+
+
+        map.removeLayer(
+            marcadorMotorista
+        );
+
+
+        marcadorMotorista=null;
+
+
+    }
+
+
+
+
+    // parar escuta motorista
+
+    if(pararEscutaMotorista){
+
+
+        pararEscutaMotorista();
+
+
+        pararEscutaMotorista=null;
+
+
+    }
+
+
+
+    // parar escuta corrida
+
+    if(pararEscutaCorrida){
+
+
+        pararEscutaCorrida();
+
+
+        pararEscutaCorrida=null;
+
+
+    }
+
+
+    console.log(
+        "✅ Tela limpa"
+    );
+
+
+}
+
 export async function verificarCorridaExistente(){
 
     const user = auth.currentUser;
@@ -1299,7 +1414,17 @@ function ouvirCorrida(){
 
 }
 function acompanharMotorista(uidMotorista){
+   console.log(
+        "Iniciando motorista:",
+        uidMotorista
+    );
 
+
+    if(pararEscutaMotorista){
+
+        pararEscutaMotorista();
+
+    }
 
 if(!uidMotorista)
 return;
